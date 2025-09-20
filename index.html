@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZellePay - Send Money Instantly</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-spinner"></div>
+            <h2>ZellePay</h2>
+            <p>Loading your account...</p>
+        </div>
+
+        <!-- Authentication Container -->
+        <div id="auth-container" class="auth-container hidden">
+            <div class="auth-card">
+                <div class="logo">
+                    <i class="fas fa-bolt"></i>
+                    <h1>ZellePay</h1>
+                </div>
+                <div class="auth-tabs">
+                    <button id="login-tab" class="tab-btn active" data-tab="login">Sign In</button>
+                    <button id="signup-tab" class="tab-btn" data-tab="signup">Sign Up</button>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <p class="forgot-password">
+                        <a href="#" id="forgot-password-link">Forgot your password?</a>
+                    </p>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signup-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-phone">Phone Number</label>
+                        <input type="tel" id="signup-phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                    <p class="terms">
+                        By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard" class="dashboard hidden">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-bolt"></i>
+                        <span>ZellePay</span>
+                    </div>
+                    <div class="user-menu">
+                        <button id="notifications-btn" class="icon-btn">
+                            <i class="fas fa-bell"></i>
+                            <span id="notification-count" class="notification-badge hidden">0</span>
+                        </button>
+                        <div class="user-profile">
+                            <img id="user-avatar" src="" alt="Profile" class="avatar">
+                            <span id="user-name">Loading...</span>
+                            <button id="user-menu-btn" class="icon-btn">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Balance Card -->
+                <div class="balance-card">
+                    <div class="balance-header">
+                        <h2>Available Balance</h2>
+                        <button id="refresh-balance" class="icon-btn">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="balance-amount">
+                        <span class="currency">$</span>
+                        <span id="user-balance">0.00</span>
+                    </div>
+                    <div class="balance-actions">
+                        <button id="add-money-btn" class="btn btn-outline">
+                            <i class="fas fa-plus"></i>
+                            Add Money
+                        </button>
+                        <button id="withdraw-btn" class="btn btn-outline">
+                            <i class="fas fa-minus"></i>
+                            Withdraw
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-grid">
+                        <button id="send-money-btn" class="action-card">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Send Money</span>
+                        </button>
+                        <button id="request-money-btn" class="action-card">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Request Money</span>
+                        </button>
+                        <button id="split-bill-btn" class="action-card">
+                            <i class="fas fa-receipt"></i>
+                            <span>Split Bill</span>
+                        </button>
+                        <button id="qr-code-btn" class="action-card">
+                            <i class="fas fa-qrcode"></i>
+                            <span>QR Code</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <div class="activity-header">
+                        <h3>Recent Activity</h3>
+                        <button id="view-all-btn" class="btn btn-text">View All</button>
+                    </div>
+                    <div id="activity-list" class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-description">Sent to John Doe</div>
+                                <div class="activity-date">Today at 2:30 PM</div>
+                            </div>
+                            <div class="activity-amount sent">-$25.00</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-description">Received from Jane Smith</div>
+                                <div class="activity-date">Yesterday at 5:45 PM</div>
+                            </div>
+                            <div class="activity-amount received">+$50.00</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modals -->
+        <div id="modal-overlay" class="modal-overlay hidden">
+            <!-- Send Money Modal -->
+            <div id="send-modal" class="modal hidden">
+                <div class="modal-header">
+                    <h2>Send Money</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="send-form">
+                        <div class="form-group">
+                            <label for="send-recipient">Send to (Email or Phone)</label>
+                            <input type="text" id="send-recipient" placeholder="Enter email or phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="send-amount">Amount</label>
+                            <div class="amount-input">
+                                <span class="currency">$</span>
+                                <input type="number" id="send-amount" placeholder="0.00" step="0.01" min="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="send-note">Note (Optional)</label>
+                            <textarea id="send-note" placeholder="What's this for?"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Send Money</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Request Money Modal -->
+            <div id="request-modal" class="modal hidden">
+                <div class="modal-header">
+                    <h2>Request Money</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="request-form">
+                        <div class="form-group">
+                            <label for="request-from">Request from (Email or Phone)</label>
+                            <input type="text" id="request-from" placeholder="Enter email or phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="request-amount">Amount</label>
+                            <div class="amount-input">
+                                <span class="currency">$</span>
+                                <input type="number" id="request-amount" placeholder="0.00" step="0.01" min="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="request-note">Note (Optional)</label>
+                            <textarea id="request-note" placeholder="What's this for?"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Request Money</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- QR Code Modal -->
+            <div id="qr-modal" class="modal hidden">
+                <div class="modal-header">
+                    <h2>QR Code Payment</h2>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="qr-tabs">
+                        <button id="qr-generate-tab" class="tab-btn active" data-tab="generate">Generate QR</button>
+                        <button id="qr-scan-tab" class="tab-btn" data-tab="scan">Scan QR</button>
+                    </div>
+                    
+                    <div id="qr-generate" class="qr-content">
+                        <form id="qr-generate-form">
+                            <div class="form-group">
+                                <label for="qr-amount">Amount</label>
+                                <div class="amount-input">
+                                    <span class="currency">$</span>
+                                    <input type="number" id="qr-amount" placeholder="0.00" step="0.01" min="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="qr-note">Note (Optional)</label>
+                                <input type="text" id="qr-note" placeholder="What's this for?">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Generate QR Code</button>
+                        </form>
+                        <div id="qr-code-display" class="qr-display hidden">
+                            <div id="qr-code"></div>
+                            <p>Show this QR code to receive payment</p>
+                        </div>
+                    </div>
+
+                    <div id="qr-scan" class="qr-content hidden">
+                        <div class="qr-scanner">
+                            <video id="qr-video" class="qr-video"></video>
+                            <div class="qr-overlay">
+                                <div class="qr-frame"></div>
+                            </div>
+                        </div>
+                        <button id="start-scan" class="btn btn-primary">Start Camera</button>
+                        <button id="stop-scan" class="btn btn-secondary hidden">Stop Scanning</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notification-container" class="notification-container"></div>
+    </div>
+
+    <!-- External Libraries (Optional - fallbacks provided) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" onerror="console.log('Firebase CDN unavailable - using demo mode')"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js" onerror="console.log('Firebase Auth CDN unavailable')"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js" onerror="console.log('Firebase Firestore CDN unavailable')"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-functions.js" onerror="console.log('Firebase Functions CDN unavailable')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" onerror="console.log('QRCode library unavailable - using fallback')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" onerror="console.log('jsQR library unavailable - camera scanning disabled')"></script>
+    
+    <!-- App JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/qr.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

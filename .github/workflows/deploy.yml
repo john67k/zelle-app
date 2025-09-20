@@ -1,0 +1,46 @@
+name: Deploy ZellePay to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Validate HTML/CSS/JS
+      run: |
+        echo "Validating frontend files..."
+        # Check if main files exist
+        test -f index.html
+        test -f css/style.css
+        test -f js/app.js
+        test -f js/auth.js
+        test -f js/payments.js
+        test -f js/qr.js
+        echo "✅ All required files found"
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        exclude_assets: '.github,README.md'
+        
+    - name: Update deployment status
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "🚀 ZellePay deployed to GitHub Pages!"
+        echo "🌐 Available at: https://${{ github.repository_owner }}.github.io/zelle-app"
