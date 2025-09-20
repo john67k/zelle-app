@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZellePay - Instant Money Transfer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <h2>ZellePay</h2>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <div class="auth-header">
+                <h2 id="auth-title">Welcome to ZellePay</h2>
+                <p id="auth-subtitle">Sign in to your account</p>
+            </div>
+            
+            <!-- Sign In Form -->
+            <div id="signin-form" class="auth-form">
+                <form id="signin-form-element">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signin-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signin-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" id="show-signup">Sign up</a>
+                </p>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <form id="signup-form-element">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signup-name" placeholder="Full Name" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signup-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="signup-phone" placeholder="Phone number" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-password" placeholder="Password" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-confirm-password" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" id="show-signin">Sign in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>ZellePay</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="notifications-btn" class="icon-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notification-count"></span>
+                    </button>
+                    <button id="profile-btn" class="icon-btn">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div class="balance-header">
+                <h3>Available Balance</h3>
+                <button id="toggle-balance" class="toggle-btn">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <div class="balance-amount">
+                <span id="balance-display">$2,450.00</span>
+            </div>
+            <div class="balance-actions">
+                <button id="add-money-btn" class="btn btn-outline">
+                    <i class="fas fa-plus"></i>
+                    Add Money
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button id="send-money-btn" class="action-btn">
+                <div class="action-icon send">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <span>Send</span>
+            </button>
+            <button id="request-money-btn" class="action-btn">
+                <div class="action-icon request">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                <span>Request</span>
+            </button>
+            <button id="split-bill-btn" class="action-btn">
+                <div class="action-icon split">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span>Split</span>
+            </button>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="transactions-section">
+            <div class="section-header">
+                <h3>Recent Activity</h3>
+                <button id="view-all-btn" class="text-btn">View All</button>
+            </div>
+            <div id="transactions-list" class="transactions-list">
+                <!-- Transactions will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Money Modal -->
+    <div id="send-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Money</h3>
+                <button class="close-btn" data-modal="send-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="send-money-form">
+                <div class="input-group">
+                    <label>To</label>
+                    <input type="email" id="send-recipient" placeholder="Email or phone number" required>
+                </div>
+                <div class="input-group">
+                    <label>Amount</label>
+                    <div class="amount-input">
+                        <span class="currency">$</span>
+                        <input type="number" id="send-amount" placeholder="0.00" step="0.01" min="0.01" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>What's this for? (Optional)</label>
+                    <input type="text" id="send-memo" placeholder="Add a note">
+                </div>
+                <button type="submit" class="btn btn-primary">Send Money</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Money Modal -->
+    <div id="request-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Request Money</h3>
+                <button class="close-btn" data-modal="request-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="request-money-form">
+                <div class="input-group">
+                    <label>From</label>
+                    <input type="email" id="request-from" placeholder="Email or phone number" required>
+                </div>
+                <div class="input-group">
+                    <label>Amount</label>
+                    <div class="amount-input">
+                        <span class="currency">$</span>
+                        <input type="number" id="request-amount" placeholder="0.00" step="0.01" min="0.01" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>What's this for? (Optional)</label>
+                    <input type="text" id="request-memo" placeholder="Add a note">
+                </div>
+                <button type="submit" class="btn btn-primary">Request Money</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Split Bill Modal -->
+    <div id="split-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Split Bill</h3>
+                <button class="close-btn" data-modal="split-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="split-bill-form">
+                <div class="input-group">
+                    <label>Total Amount</label>
+                    <div class="amount-input">
+                        <span class="currency">$</span>
+                        <input type="number" id="split-total" placeholder="0.00" step="0.01" min="0.01" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Split with</label>
+                    <div id="split-recipients">
+                        <div class="recipient-input">
+                            <input type="email" placeholder="Email or phone number" required>
+                            <button type="button" class="remove-recipient">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="add-recipient" class="btn btn-outline btn-sm">
+                        <i class="fas fa-plus"></i>
+                        Add Person
+                    </button>
+                </div>
+                <div class="input-group">
+                    <label>What's this for? (Optional)</label>
+                    <input type="text" id="split-memo" placeholder="Add a note">
+                </div>
+                <div class="split-summary">
+                    <p>Each person pays: <span id="split-amount-each">$0.00</span></p>
+                </div>
+                <button type="submit" class="btn btn-primary">Split Bill</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 id="success-title">Success!</h3>
+            <p id="success-message">Your transaction has been completed.</p>
+            <button class="btn btn-primary" onclick="closeModal('success-modal')">Done</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="transactions.js"></script>
+    <script src="realtime.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
