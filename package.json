@@ -1,0 +1,33 @@
+{
+  "name": "zellepay",
+  "version": "1.0.0",
+  "description": "Modern Zelle-style instant money transfer web application",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'No build step required for vanilla JS app'",
+    "deploy": "firebase deploy",
+    "test": "echo 'No tests yet'"
+  },
+  "keywords": [
+    "zelle",
+    "payments",
+    "money-transfer",
+    "fintech",
+    "firebase",
+    "javascript"
+  ],
+  "author": "ZellePay Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/john67k/zelle-app.git"
+  },
+  "homepage": "https://john67k.github.io/zelle-app",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
